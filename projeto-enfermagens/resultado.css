@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.score-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eef8f5;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background: #0f8b7d;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-secondary {
+    background: #2f6fed;
+}
+
+.btn-link {
+    background: #6b7280;
+}
+
+.review {
+    display: none;
+    margin-top: 18px;
+}
+
+.review-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: #fff;
+}
+
+.review-item.correct {
+    border-left: 6px solid #2e9e5d;
+    background: #f3fbf6;
+}
+
+.review-item.wrong {
+    border-left: 6px solid #d94a3d;
+    background: #fff7f6;
+}
+
+.review-item p {
+    margin: 6px 0;
+}
+
+.review-item .result-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-weight: 700;
+}
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado do Quiz</title>
+    <link rel="stylesheet" href="resultado.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Resultado final</h1>
+        <section class="score-box">
+            <div>
+                <p id="player-name">Nome:</p>
+                <p id="score-text"></p>
+            </div>
+            <button class="btn" id="toggle-review">Ver questões</button>
+        </section>
+
+        <section class="actions">
+            <button class="btn btn-secondary" id="retry-btn">Refazer teste</button>
+            <a class="btn btn-link" href="index.html">Voltar ao início</a>
+        </section>
+
+        <section class="review" id="review-section"></section>
+    </main>
+
+    <script src="resultado.js"></script>
+</body>
+</html>

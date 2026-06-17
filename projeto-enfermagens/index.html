@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="estilos/inicio.css" media="all">
+    <link rel="stylesheet" href="estilos/inicio02.css" media="screen and (max-width: 768px)">
+    <link rel="icon" type="image/png" sizes="128x128" href="/img/Design sem nome.png">
+</head>
+
+<body>
+    <div id="corpo">
+        <header>
+            <h1 id="titulo">
+                BEM VINDO AO QUIZ DE ENFERMAGEM
+            </h1>
+        </header>
+        <form autocomplete="on" method="get" action="perguntas.html">
+            <p id="dnome">
+                <label for="inome">DIGITE SEU NOME: <input type="text" name="nome" id="inome" required pattern="[A-Za-zÀ-ÿ ]+" title="Por favor, digite apenas letras."></label>
+            </p>
+            <p id="inicial"><button id="iinicial" type="submit"></button></p>
+        </form>
+    </div>
+    <script src="script.js">
+    </script>
+</body>
+
+</html>
