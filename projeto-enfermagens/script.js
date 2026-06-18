@@ -218,7 +218,7 @@ function loadQuestion() {
                 setTimeout(() => {
                     currentQuestion += 1;
                     if (currentQuestion < quizData.length) loadQuestion(); else showResult();
-                }, 700);
+                }, 100);
             }
         };
 
@@ -364,7 +364,7 @@ function selectAnswer(index, button) {
     setTimeout(() => {
         currentQuestion += 1;
         if (currentQuestion < quizData.length) loadQuestion(); else showResult();
-    }, 900);
+    }, 100);
 }
 
 function showResult() {
