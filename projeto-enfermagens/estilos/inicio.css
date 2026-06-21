@@ -12,7 +12,7 @@ body {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #0d5c75;
+    background-color: lightblue;
     padding-top: 20px;
 }
 
@@ -30,6 +30,10 @@ div#corpo {
     border-radius: 30px;
     margin-top: 20px;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 p#dnome {
@@ -41,7 +45,7 @@ input#inome {
     height: 35px;
     width: 100%;
     border-radius: 10px;
-    border: 1px solid #0044ff;
+    border: 1px solid #000000;
 }
 
 p#inicial {
