@@ -108,6 +108,66 @@ header {
     gap: 14px;
 }
 
+/* controles e botão Enviar */
+.controls {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-button {
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(15, 139, 125, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.12s ease;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px rgba(15, 139, 125, 0.24);
+}
+
+.submit-button:active {
+    transform: translateY(-1px);
+}
+
+.submit-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(55, 183, 160, 0.15), 0 18px 36px rgba(15, 139, 125, 0.18);
+}
+
+.submit-button.ready {
+    background: linear-gradient(135deg, #16a34a, #10b981);
+    box-shadow: 0 22px 44px rgba(16, 163, 74, 0.28), 0 0 0 6px rgba(16, 163, 74, 0.08);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.submit-button.ready::after {
+    content: '\2022';
+    display: inline-block;
+    margin-left: 10px;
+    color: rgba(255,255,255,0.95);
+    font-size: 1.1rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+@media (max-width: 560px) {
+    .controls {
+        justify-content: center;
+    }
+    .submit-button {
+        width: 100%;
+        max-width: 420px;
+    }
+}
+
 
 /* estilos para questões de associação */
 
@@ -220,6 +280,35 @@ header {
     transform: translateY(-2px);
     border-color: var(--primary);
     box-shadow: 0 12px 24px rgba(15, 139, 125, 0.12);
+}
+
+/* estado de seleção pendente (antes de enviar) */
+.answer-button.pending {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(62,168,150,0.06), rgba(62,168,150,0.03));
+    box-shadow: 0 10px 20px rgba(15,139,125,0.08);
+    transform: translateY(-2px);
+}
+
+/* estado após avaliação */
+.answer-button.correct {
+    border-color: var(--success);
+    background: linear-gradient(180deg, rgba(47,159,192,0.08), rgba(47,159,192,0.03));
+    box-shadow: 0 12px 28px rgba(31,130,143,0.12);
+}
+
+.answer-button.incorrect {
+    border-color: var(--danger);
+    background: linear-gradient(180deg, rgba(199,77,84,0.06), rgba(199,77,84,0.03));
+    box-shadow: 0 8px 18px rgba(199,77,84,0.06);
+}
+
+/* botão desabilitado */
+.submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 /*
 .answer-button.correct {

@@ -1,25 +1,25 @@
 const quizData = [
-    // perguntas de múltipla escolha (originais)
+ 
     { type: 'mcq', question: 'Qual é o nome da técnica que previne infecções durante procedimentos invasivos?', answers: ['Escovação', 'Assepsia', 'Aromaterapia', 'Hidratação'], correct: 1 },
     { type: 'mcq', question: 'O que significa a sigla "PA" no registro de sinais vitais?', answers: ['Peso Arterial', 'Pulso Assistido', 'Pressão Arterial', 'Padrão Alimentar'], correct: 2 },
     { type: 'mcq', question: 'Qual é a posição recomendada para paciente em risco de aspiração?', answers: ['Decúbito ventral', 'Sentado com tronco elevado', 'Decúbito lateral direito', 'Decúbito lateral esquerdo'], correct: 1 },
     { type: 'mcq', question: 'Em qual situação a equipe de enfermagem deve realizar curativo estéril?', answers: ['Troca de roupa de cama', 'Limpeza oral', 'Tratamento de ferida cirúrgica', 'Aferição de temperatura'], correct: 2 },
     { type: 'mcq', question: 'Qual é o principal objetivo da comunicação terapêutica?', answers: ['Fazer amizade', 'Informar colegas', 'Promover compreensão do paciente', 'Registrar dados'], correct: 2 },
 
-    // 5 perguntas de Verdadeiro/Falso
-    { type: 'tf', question: 'A lavagem das mãos é uma medida eficaz para prevenir infecções nosocomiais.', correct: 0 }, // 0 = Verdadeiro
-    { type: 'tf', question: 'Antibióticos são sempre indicados para infecções virais.', correct: 1 }, // 1 = Falso
+    
+    { type: 'tf', question: 'A lavagem das mãos é uma medida eficaz para prevenir infecções nosocomiais.', correct: 0 },
+    { type: 'tf', question: 'Antibióticos são sempre indicados para infecções virais.', correct: 1 },
     { type: 'tf', question: 'Aferir sinais vitais é tarefa exclusiva do médico.', correct: 1 },
     { type: 'tf', question: 'Curativos estéreis devem ser utilizados em feridas cirúrgicas limpas quando recomendado.', correct: 0 },
     { type: 'tf', question: 'A comunicação terapêutica pode melhorar a adesão ao tratamento pelo paciente.', correct: 0 },
 
-    // 5 perguntas de Associação (match)
+    
     {
         type: 'match',
         question: 'Associe a medida de enfermagem à sua finalidade:',
         left: ['Higienização das mãos', 'Troca de curativo estéril', 'Aferição da PA', 'Elevar cabeceira', 'Registro de enfermagem'],
         right: ['Prevenção de infecção', 'Monitorar pressão arterial', 'Documentar cuidados prestados', 'Reduzir risco de aspiração', 'Manter campo estéril'],
-        // mapping: left index -> right index
+        
         mapping: [0, 4, 1, 3, 2]
     },
     {
@@ -61,11 +61,23 @@ const resultBoxEl = document.getElementById('result-box');
 const scoreTextEl = document.getElementById('score-text');
 const evaluationTextEl = document.getElementById('evaluation-text');
 const retryBtn = document.getElementById('retry-btn');
+const submitBtn = document.getElementById('submit-btn');
+
+if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+        if (typeof finalizePending === 'function') finalizePending();
+        else {
+            if (typeof saveQuizResults === 'function') saveQuizResults();
+            if (typeof showResult === 'function') showResult();
+        }
+    });
+}
 
 let currentQuestion = 0;
 let score = 0;
 let answered = false;
 let reviewResults = [];
+let pending = null;
 
 function getQueryParam(param) {
     return new URLSearchParams(window.location.search).get(param)?.trim() || '';
@@ -95,30 +107,34 @@ function showWelcome() {
 
 function loadQuestion() {
     answered = false;
+    pending = null;
     const data = quizData[currentQuestion];
     questionNumberEl.textContent = `Pergunta ${currentQuestion + 1} de ${quizData.length}`;
     questionTextEl.textContent = data.question;
     progressFillEl.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
     answersEl.innerHTML = '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviar resposta';
+        submitBtn.classList.remove('ready');
+    }
 
     if (!data.type || data.type === 'mcq') {
-        // múltipla escolha
         data.answers.forEach((answer, index) => {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'answer-button';
             button.textContent = answer;
-            button.addEventListener('click', () => selectAnswer(index, button));
+            button.addEventListener('click', () => chooseAnswer(index, button));
             answersEl.appendChild(button);
         });
     } else if (data.type === 'tf') {
-        // verdadeiro / falso
         ['Verdadeiro', 'Falso'].forEach((label, idx) => {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'answer-button';
             button.textContent = label;
-            button.addEventListener('click', () => selectAnswer(idx, button));
+            button.addEventListener('click', () => chooseAnswer(idx, button));
             answersEl.appendChild(button);
         });
     } else if (data.type === 'match') {
@@ -184,41 +200,17 @@ function loadQuestion() {
             usedRight.add(rightIndex);
             connections.push({ leftIndex, rightIndex });
             requestAnimationFrame(drawLines);
-
+            
+            
+            
+            
             if (usedLeft.size === data.left.length && usedRight.size === data.left.length) {
-                answered = true;
-                const correctPairs = connections.filter(({ leftIndex, rightIndex }) => {
-                    return shuffled[rightIndex] === data.right[data.mapping[leftIndex]];
-                }).length;
-
-                const isCorrect = correctPairs === data.left.length;
-                if (isCorrect) {
-                    score += 1;
+                pending = { type: 'match', connections: connections.slice(), shuffled };
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Enviar resposta — pronto';
+                    submitBtn.classList.add('ready');
                 }
-
-                const userAnswerText = connections
-                    .map(({ leftIndex, rightIndex }) => {
-                        return `${data.left[leftIndex]} → ${shuffled[rightIndex]}`;
-                    })
-                    .join(' | ');
-
-                const correctAnswerText = data.left
-                    .map((leftLabel, index) => {
-                        return `${leftLabel} → ${data.right[data.mapping[index]]}`;
-                    })
-                    .join(' | ');
-
-                reviewResults[currentQuestion] = {
-                    question: data.question,
-                    userAnswer: userAnswerText,
-                    correctAnswer: correctAnswerText,
-                    isCorrect
-                };
-
-                setTimeout(() => {
-                    currentQuestion += 1;
-                    if (currentQuestion < quizData.length) loadQuestion(); else showResult();
-                }, 100);
             }
         };
 
@@ -233,6 +225,12 @@ function loadQuestion() {
             usedLeft.delete(leftIndex);
             usedRight.delete(rightIndex);
             requestAnimationFrame(drawLines);
+            if (pending && pending.type === 'match') pending = null;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Enviar resposta';
+                submitBtn.classList.remove('ready');
+            }
         };
 
         const handleItemClick = (type, index) => {
@@ -331,40 +329,112 @@ function loadQuestion() {
     }
 }
 
-function selectAnswer(index, button) {
+function chooseAnswer(index, button) {
     if (answered) return;
-    answered = true;
-    const data = quizData[currentQuestion];
-    const isCorrect = index === data.correct;
 
-    if (isCorrect) {
-        score += 1;
-        button.classList.add('correct');
-    } else {
-        button.classList.add('incorrect');
-        const buttons = Array.from(answersEl.querySelectorAll('.answer-button'));
-        const correctButton = buttons[data.correct];
-        if (correctButton) correctButton.classList.add('correct');
+    const pendingBtns = answersEl.querySelectorAll('.answer-button.pending');
+    pendingBtns.forEach((b) => b.classList.remove('pending'));
+
+    button.classList.add('pending');
+    pending = { type: 'mcq', index, button };
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar resposta — pronto';
+        submitBtn.classList.add('ready');
+    }
+}
+
+function finalizePending() {
+    if (!pending) return;
+    const data = quizData[currentQuestion];
+
+    if (pending.type === 'mcq') {
+        const index = pending.index;
+        const button = pending.button;
+        const isCorrect = index === data.correct;
+
+        answered = true;
+        if (isCorrect) {
+            score += 1;
+            button.classList.add('correct');
+        } else {
+            button.classList.add('incorrect');
+            const buttons = Array.from(answersEl.querySelectorAll('.answer-button'));
+            const correctButton = buttons[data.correct];
+            if (correctButton) correctButton.classList.add('correct');
+        }
+
+        const userAnswer = data.type === 'tf'
+            ? (index === 0 ? 'Verdadeiro' : 'Falso')
+            : data.answers[index];
+        const correctAnswer = data.type === 'tf'
+            ? (data.correct === 0 ? 'Verdadeiro' : 'Falso')
+            : data.answers[data.correct];
+
+        reviewResults[currentQuestion] = {
+            question: data.question,
+            userAnswer,
+            correctAnswer,
+            isCorrect
+        };
+
+        const allButtons = answersEl.querySelectorAll('button');
+        allButtons.forEach((b) => (b.disabled = true));
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviar resposta';
+            submitBtn.classList.remove('ready');
+        }
+        setTimeout(() => {
+            currentQuestion += 1;
+            if (currentQuestion < quizData.length) loadQuestion(); else showResult();
+        }, 250);
+    } else if (pending.type === 'match') {
+        const conn = pending.connections;
+        const shuffled = pending.shuffled;
+
+        const correctPairs = conn.filter(({ leftIndex, rightIndex }) => {
+            return shuffled[rightIndex] === data.right[data.mapping[leftIndex]];
+        }).length;
+
+        const isCorrect = correctPairs === data.left.length;
+        if (isCorrect) score += 1;
+
+        const userAnswerText = conn
+            .map(({ leftIndex, rightIndex }) => {
+                return `${data.left[leftIndex]} → ${shuffled[rightIndex]}`;
+            })
+            .join(' | ');
+
+        const correctAnswerText = data.left
+            .map((leftLabel, index) => {
+                return `${leftLabel} → ${data.right[data.mapping[index]]}`;
+            })
+            .join(' | ');
+
+        reviewResults[currentQuestion] = {
+            question: data.question,
+            userAnswer: userAnswerText,
+            correctAnswer: correctAnswerText,
+            isCorrect
+        };
+
+        answered = true;
+        const allButtons = answersEl.querySelectorAll('button');
+        allButtons.forEach((b) => (b.disabled = true));
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviar resposta';
+            submitBtn.classList.remove('ready');
+        }
+
+        setTimeout(() => {
+            currentQuestion += 1;
+            if (currentQuestion < quizData.length) loadQuestion(); else showResult();
+        }, 250);
     }
 
-    const userAnswer = data.type === 'tf'
-        ? (index === 0 ? 'Verdadeiro' : 'Falso')
-        : data.answers[index];
-    const correctAnswer = data.type === 'tf'
-        ? (data.correct === 0 ? 'Verdadeiro' : 'Falso')
-        : data.answers[data.correct];
-
-    reviewResults[currentQuestion] = {
-        question: data.question,
-        userAnswer,
-        correctAnswer,
-        isCorrect
-    };
-
-    setTimeout(() => {
-        currentQuestion += 1;
-        if (currentQuestion < quizData.length) loadQuestion(); else showResult();
-    }, 100);
+    pending = null;
 }
 
 function showResult() {
