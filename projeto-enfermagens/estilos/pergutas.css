@@ -216,6 +216,9 @@ header {
     text-align: left;
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    white-space: normal;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .match-item:hover {
@@ -411,11 +414,50 @@ footer {
 }
 
 @media (max-width: 720px) {
-    .match-game { grid-template-columns: 1fr; }
-    .match-lines { position: absolute; height: 100%; }
-    .match-column { gap: 8px; }
+    .match-game {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+    .match-lines {
+        display: block;
+    }
+    .match-column {
+        gap: 10px;
+    }
+    .match-column.match-column-left,
+    .match-column.match-column-right {
+        padding: 12px;
+        border: 1px solid rgba(15, 139, 125, 0.16);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.9);
+    }
+    .match-column.match-column-left::before,
+    .match-column.match-column-right::before {
+        content: none;
+    }
+    .match-hint,
+    .match-selection-banner {
+        display: none;
+    }
+    .match-item {
+        word-break: break-word;
+        white-space: normal;
+    }
     .question-box, .result-box { padding: 18px; }
     .controls { justify-content: center; }
+}
+
+@media (min-width: 721px) {
+    .match-game {
+        grid-template-columns: 1fr 1fr;
+    }
+    .match-column {
+        align-items: stretch;
+    }
+    .match-item {
+        white-space: normal;
+        word-break: break-word;
+    }
 }
 
 @media (max-width: 480px) {

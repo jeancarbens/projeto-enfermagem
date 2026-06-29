@@ -146,15 +146,29 @@ function loadQuestion() {
 
         const matchGame = document.createElement('div');
         matchGame.className = 'match-game';
+        const isMobileMatch = window.matchMedia('(max-width: 720px)').matches;
+        if (isMobileMatch) {
+            matchGame.classList.add('match-game-mobile');
+        }
 
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.classList.add('match-lines');
 
+        const mobileHint = document.createElement('div');
+        mobileHint.className = 'match-hint';
+        mobileHint.textContent = 'Toque em um termo e depois no significado correspondente para criar o par.';
+
+        const selectionBanner = document.createElement('div');
+        selectionBanner.className = 'match-selection-banner';
+        selectionBanner.textContent = 'Nenhum item selecionado ainda.';
+
         const leftColumn = document.createElement('div');
         leftColumn.className = 'match-column match-column-left';
+        leftColumn.dataset.label = 'Termos';
 
         const rightColumn = document.createElement('div');
         rightColumn.className = 'match-column match-column-right';
+        rightColumn.dataset.label = 'Significados';
 
         const leftButtons = [];
         const rightButtons = [];
@@ -249,6 +263,7 @@ function loadQuestion() {
                 selectedItem = null;
                 leftButtons.forEach((btn) => btn.classList.remove('selected'));
                 rightButtons.forEach((btn) => btn.classList.remove('selected'));
+                if (isMobileMatch) selectionBanner.textContent = 'Par removido. Toque em um termo para começar novamente.';
                 return;
             }
 
@@ -260,9 +275,11 @@ function loadQuestion() {
                 if (type === 'left') {
                     leftButtons.forEach((btn, i) => btn.classList.toggle('selected', i === index));
                     rightButtons.forEach((btn) => btn.classList.remove('selected'));
+                    if (isMobileMatch) selectionBanner.textContent = `Selecionado termo: "${data.left[index]}". Agora escolha o significado.`;
                 } else {
                     rightButtons.forEach((btn, i) => btn.classList.toggle('selected', i === index));
                     leftButtons.forEach((btn) => btn.classList.remove('selected'));
+                    if (isMobileMatch) selectionBanner.textContent = `Selecionado significado: "${shuffled[index]}". Agora escolha o termo.`;
                 }
                 return;
             }
@@ -279,11 +296,13 @@ function loadQuestion() {
 
             if (selectedItem.type === 'left' && type === 'right') {
                 addConnection(selectedItem.index, index);
+                if (isMobileMatch) selectionBanner.textContent = `Par formado: "${data.left[selectedItem.index]}" → "${shuffled[index]}". Toque em outro termo.`;
                 selectedItem = null;
                 leftButtons.forEach((btn) => btn.classList.remove('selected'));
                 rightButtons.forEach((btn) => btn.classList.remove('selected'));
             } else if (selectedItem.type === 'right' && type === 'left') {
                 addConnection(index, selectedItem.index);
+                if (isMobileMatch) selectionBanner.textContent = `Par formado: "${data.left[index]}" → "${shuffled[selectedItem.index]}". Toque em outro termo.`;
                 selectedItem = null;
                 leftButtons.forEach((btn) => btn.classList.remove('selected'));
                 rightButtons.forEach((btn) => btn.classList.remove('selected'));
@@ -320,6 +339,10 @@ function loadQuestion() {
         });
 
         matchGame.appendChild(svg);
+        if (isMobileMatch) {
+            matchGame.appendChild(mobileHint);
+            matchGame.appendChild(selectionBanner);
+        }
         matchGame.appendChild(leftColumn);
         matchGame.appendChild(rightColumn);
         answersEl.appendChild(matchGame);
