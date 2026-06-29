@@ -11,10 +11,11 @@ body {
 
 .container {
     max-width: 900px;
-    margin: 40px auto;
+    width: min(96%, 900px);
+    margin: 24px auto;
     background: #b6deff;
     border-radius: 16px;
-    padding: 32px;
+    padding: 28px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
@@ -33,10 +34,90 @@ h1 {
     gap: 16px;
 }
 
+@media (max-width: 720px) {
+    .score-box { flex-direction: column; align-items: stretch; gap: 12px; }
+    .celebration { order: -1; text-align: center; }
+    .actions { width: 100%; justify-content: center; }
+}
+
+.celebration {
+    width: 140px;
+    min-width: 120px;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 1;
+    padding: 6px;
+}
+
+.celebration .emoji {
+    display: block;
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+    transform-origin: center;
+}
+
+.celebration .msg {
+    font-size: 0.85rem;
+    margin: 0;
+    color: #065f46;
+    font-weight: 800;
+}
+
+.celebration.perfect .emoji {
+    animation: pop 900ms ease both;
+}
+
+.celebration.great .emoji {
+    animation: bounce 900ms ease both;
+}
+
+.celebration.good .emoji {
+    animation: float 1200ms ease-in-out infinite;
+}
+
+.celebration.ok .emoji {
+    animation: pulse 900ms ease both;
+}
+
+.celebration.low .emoji {
+    opacity: 0.9;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.4) rotate(-10deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(6deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    30% { transform: translateY(-10px); }
+    60% { transform: translateY(4px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
 .actions {
     display: flex;
     gap: 12px;
     margin-bottom: 20px;
+}
+
+@media (max-width: 560px) {
+    .actions { flex-direction: column; }
+    .btn { width: 100%; }
+    .btn-link { text-align: center; }
 }
 
 .btn {

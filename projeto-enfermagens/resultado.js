@@ -32,6 +32,28 @@ function renderResult() {
     playerNameEl.textContent = `Nome: ${data.nome || 'Aluno(a)'}`;
     scoreTextEl.textContent = `Pontuação: ${score} de ${total}`;
 
+    const celebrationEl = document.getElementById('celebration');
+    if (celebrationEl) {
+        celebrationEl.className = 'celebration';
+        // decidir faixa
+        if (score === total && total > 0) {
+            celebrationEl.classList.add('perfect');
+            celebrationEl.innerHTML = `<span class="emoji">🏆🎉</span><p class="msg">Perfeito — todas corretas!</p>`;
+        } else if (score >= 10 && score <= (total - 1)) {
+            celebrationEl.classList.add('great');
+            celebrationEl.innerHTML = `<span class="emoji">👏✨</span><p class="msg">Ótimo — muito bem!</p>`;
+        } else if (score >= 7 && score < 10) {
+            celebrationEl.classList.add('good');
+            celebrationEl.innerHTML = `<span class="emoji">🙂👍</span><p class="msg">Bom — continue praticando!</p>`;
+        } else if (score >= 5 && score <= 6) {
+            celebrationEl.classList.add('ok');
+            celebrationEl.innerHTML = `<span class="emoji">🤝</span><p class="msg">Razoável — quase lá!</p>`;
+        } else {
+            celebrationEl.classList.add('low');
+            celebrationEl.innerHTML = `<span class="emoji">😕💡</span><p class="msg">Tente novamente — estude mais!</p>`;
+        }
+    }
+
     const results = Array.isArray(data.results) ? data.results : [];
 
     reviewSection.innerHTML = '';
