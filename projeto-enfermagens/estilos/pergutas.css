@@ -111,6 +111,25 @@ header {
 }
 
 /* controles e botão Enviar */
+.essay-input {
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid rgba(15, 139, 125, 0.2);
+    border-radius: 14px;
+    padding: 12px 14px;
+    resize: vertical;
+    background: white;
+    color: var(--text);
+    font: inherit;
+    line-height: 1.45;
+}
+
+.essay-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(55, 183, 160, 0.12);
+}
+
 .controls {
     margin-top: 18px;
     display: flex;

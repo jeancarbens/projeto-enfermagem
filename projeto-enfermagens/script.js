@@ -4,14 +4,14 @@ const quizData = [
     { type: 'mcq', question: 'O que significa a sigla "PA" no registro de sinais vitais?', answers: ['Peso Arterial', 'Pulso Assistido', 'Pressão Arterial', 'Padrão Alimentar'], correct: 2 },
     { type: 'mcq', question: 'Qual é a posição recomendada para paciente em risco de aspiração?', answers: ['Decúbito ventral', 'Sentado com tronco elevado', 'Decúbito lateral direito', 'Decúbito lateral esquerdo'], correct: 1 },
     { type: 'mcq', question: 'Em qual situação a equipe de enfermagem deve realizar curativo estéril?', answers: ['Troca de roupa de cama', 'Limpeza oral', 'Tratamento de ferida cirúrgica', 'Aferição de temperatura'], correct: 2 },
-    { type: 'mcq', question: 'Qual é o principal objetivo da comunicação terapêutica?', answers: ['Fazer amizade', 'Informar colegas', 'Promover compreensão do paciente', 'Registrar dados'], correct: 2 },
+    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente no serviço de enfermagem.', placeholder: 'Descreva os principais dados e cuidados iniciais.' },
 
     
     { type: 'tf', question: 'A lavagem das mãos é uma medida eficaz para prevenir infecções nosocomiais.', correct: 0 },
     { type: 'tf', question: 'Antibióticos são sempre indicados para infecções virais.', correct: 1 },
     { type: 'tf', question: 'Aferir sinais vitais é tarefa exclusiva do médico.', correct: 1 },
     { type: 'tf', question: 'Curativos estéreis devem ser utilizados em feridas cirúrgicas limpas quando recomendado.', correct: 0 },
-    { type: 'tf', question: 'A comunicação terapêutica pode melhorar a adesão ao tratamento pelo paciente.', correct: 0 },
+    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente, destacando sinais vitais e queixas principais.', placeholder: 'Registre as informações observadas e a condição inicial do paciente.' },
 
     
     {
@@ -137,6 +137,20 @@ function loadQuestion() {
             button.addEventListener('click', () => chooseAnswer(idx, button));
             answersEl.appendChild(button);
         });
+    } else if (data.type === 'essay') {
+        const textarea = document.createElement('textarea');
+        textarea.className = 'essay-input';
+        textarea.rows = 6;
+        textarea.placeholder = data.placeholder || 'Escreva sua anotação aqui...';
+        textarea.addEventListener('input', () => {
+            pending = { type: 'essay', value: textarea.value.trim() };
+            if (submitBtn) {
+                submitBtn.disabled = textarea.value.trim().length === 0;
+                submitBtn.textContent = textarea.value.trim().length === 0 ? 'Enviar resposta' : 'Enviar resposta — pronto';
+                submitBtn.classList.toggle('ready', textarea.value.trim().length > 0);
+            }
+        });
+        answersEl.appendChild(textarea);
     } else if (data.type === 'match') {
         const right = data.right.slice();
         const shuffled = right
@@ -379,12 +393,6 @@ function finalizePending() {
         answered = true;
         if (isCorrect) {
             score += 1;
-            button.classList.add('correct');
-        } else {
-            button.classList.add('incorrect');
-            const buttons = Array.from(answersEl.querySelectorAll('.answer-button'));
-            const correctButton = buttons[data.correct];
-            if (correctButton) correctButton.classList.add('correct');
         }
 
         const userAnswer = data.type === 'tf'
@@ -402,7 +410,10 @@ function finalizePending() {
         };
 
         const allButtons = answersEl.querySelectorAll('button');
-        allButtons.forEach((b) => (b.disabled = true));
+        allButtons.forEach((b) => {
+            b.disabled = true;
+            b.classList.remove('pending', 'correct', 'incorrect');
+        });
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Enviar resposta';
@@ -411,7 +422,24 @@ function finalizePending() {
         setTimeout(() => {
             currentQuestion += 1;
             if (currentQuestion < quizData.length) loadQuestion(); else showResult();
-        }, 250);
+        }, 100);
+    } else if (pending.type === 'essay') {
+        answered = true;
+        reviewResults[currentQuestion] = {
+            question: data.question,
+            userAnswer: pending.value,
+            correctAnswer: 'Resposta discursiva registrada',
+            isCorrect: true
+        };
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviar resposta';
+            submitBtn.classList.remove('ready');
+        }
+        setTimeout(() => {
+            currentQuestion += 1;
+            if (currentQuestion < quizData.length) loadQuestion(); else showResult();
+        }, 100);
     } else if (pending.type === 'match') {
         const conn = pending.connections;
         const shuffled = pending.shuffled;
@@ -444,7 +472,10 @@ function finalizePending() {
 
         answered = true;
         const allButtons = answersEl.querySelectorAll('button');
-        allButtons.forEach((b) => (b.disabled = true));
+        allButtons.forEach((b) => {
+            b.disabled = true;
+            b.classList.remove('pending', 'correct', 'incorrect', 'selected', 'connected', 'wrong');
+        });
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Enviar resposta';
@@ -454,7 +485,7 @@ function finalizePending() {
         setTimeout(() => {
             currentQuestion += 1;
             if (currentQuestion < quizData.length) loadQuestion(); else showResult();
-        }, 250);
+        }, 100);
     }
 
     pending = null;
