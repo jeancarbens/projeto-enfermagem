@@ -556,8 +556,10 @@ function finalizePending() {
             return shuffled[rightIndex] === data.right[data.mapping[leftIndex]];
         }).length;
 
+        const pointsEarned = correctPairs * 0.2;
+        score += pointsEarned;
+
         const isCorrect = correctPairs === data.left.length;
-        if (isCorrect) score += 1;
 
         const userAnswerText = conn
             .map(({ leftIndex, rightIndex }) => {
@@ -576,7 +578,8 @@ function finalizePending() {
             question: data.question,
             userAnswer: userAnswerText,
             correctAnswer: correctAnswerText,
-            isCorrect
+            isCorrect,
+            pointsEarned
         };
 
         answered = true;
