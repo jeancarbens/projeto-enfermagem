@@ -4,14 +4,14 @@ const quizData = [
     { type: 'mcq', question: 'O que significa a sigla "PA" no registro de sinais vitais?', answers: ['Peso Arterial', 'Pulso Assistido', 'Pressão Arterial', 'Padrão Alimentar'], correct: 2 },
     { type: 'mcq', question: 'Qual é a posição recomendada para paciente em risco de aspiração?', answers: ['Decúbito ventral', 'Sentado com tronco elevado', 'Decúbito lateral direito', 'Decúbito lateral esquerdo'], correct: 1 },
     { type: 'mcq', question: 'Em qual situação a equipe de enfermagem deve realizar curativo estéril?', answers: ['Troca de roupa de cama', 'Limpeza oral', 'Tratamento de ferida cirúrgica', 'Aferição de temperatura'], correct: 2 },
-    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente no serviço de enfermagem.', placeholder: 'Descreva os principais dados e cuidados iniciais.' },
+    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente no serviço de enfermagem.', placeholder: 'Descreva os principais dados e cuidados iniciais.', palavras_chave: ['admissao', 'paciente', 'dados', 'cuidados', 'avaliacao'] },
 
     
     { type: 'tf', question: 'A lavagem das mãos é uma medida eficaz para prevenir infecções nosocomiais.', correct: 0 },
     { type: 'tf', question: 'Antibióticos são sempre indicados para infecções virais.', correct: 1 },
     { type: 'tf', question: 'Aferir sinais vitais é tarefa exclusiva do médico.', correct: 1 },
     { type: 'tf', question: 'Curativos estéreis devem ser utilizados em feridas cirúrgicas limpas quando recomendado.', correct: 0 },
-    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente, destacando sinais vitais e queixas principais.', placeholder: 'Registre as informações observadas e a condição inicial do paciente.' },
+    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente, destacando sinais vitais e queixas principais.', placeholder: 'Registre as informações observadas e a condição inicial do paciente.', palavras_chave: ['admissao', 'paciente', 'sinais', 'vitais', 'queixas', 'condicao'] },
 
     
     {
@@ -62,6 +62,7 @@ const scoreTextEl = document.getElementById('score-text');
 const evaluationTextEl = document.getElementById('evaluation-text');
 const retryBtn = document.getElementById('retry-btn');
 const submitBtn = document.getElementById('submit-btn');
+const essayQuestionIndexes = new Set([4, 9]);
 
 if (submitBtn) {
     submitBtn.addEventListener('click', () => {
@@ -105,6 +106,101 @@ function showWelcome() {
         : 'Bem-vindo(a) ao quiz de enfermagem!';
 }
 
+function validateEssayAnswer(value, questionData, questionIndex, { minLength = 10, minWords = 4, requiredRatio = 0.5 } = {}) {
+    const normalized = value.trim();
+
+    if (!normalized) {
+        return {
+            valid: false,
+            message: 'Escreva uma resposta para continuar.',
+            relevant: false,
+            feedback: 'Resposta em branco.',
+            status: 'incorrect'
+        };
+    }
+
+    if (normalized.length < minLength) {
+        return {
+            valid: false,
+            message: `A resposta precisa ter pelo menos ${minLength} caracteres.`,
+            relevant: false,
+            feedback: 'Resposta muito curta.',
+            status: 'incorrect'
+        };
+    }
+
+    const words = normalized.split(/\s+/).filter(Boolean);
+    if (words.length < minWords) {
+        return {
+            valid: false,
+            message: `Descreva a resposta com mais detalhes (mínimo de ${minWords} palavras).`,
+            relevant: false,
+            feedback: 'Resposta com poucos detalhes.',
+            status: 'incorrect'
+        };
+    }
+
+    if (essayQuestionIndexes.has(questionIndex)) {
+        const lowerValue = normalized
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, ' ');
+
+        const keywords = Array.isArray(questionData?.palavras_chave)
+            ? questionData.palavras_chave
+            : [];
+
+        const matchedKeywords = keywords.filter((keyword) => {
+            const normalizedKeyword = String(keyword)
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s]/g, ' ')
+                .trim();
+            return normalizedKeyword && lowerValue.includes(normalizedKeyword);
+        }).length;
+
+        const threshold = Math.max(1, Math.ceil(keywords.length * requiredRatio));
+
+        if (matchedKeywords >= threshold) {
+            return {
+                valid: true,
+                message: 'Resposta válida e bem relacionada à pergunta.',
+                relevant: true,
+                feedback: 'Resposta completa e alinhada ao tema da pergunta.',
+                status: 'correct'
+            };
+        }
+
+        if (matchedKeywords > 0) {
+            return {
+                valid: true,
+                message: 'Resposta parcialmente correta. Pode melhorar com mais detalhes.',
+                relevant: true,
+                feedback: 'Resposta relacionada ao tema, mas ainda incompleta.',
+                status: 'partial'
+            };
+        }
+
+        return {
+            valid: true,
+            message: 'Resposta muito genérica. Aumente a conexão com a pergunta.',
+            relevant: false,
+            feedback: 'Conteúdo pouco relacionado ao tema da pergunta.',
+            status: 'incorrect'
+        };
+    }
+
+    return {
+        valid: true,
+        message: 'Resposta válida.',
+        relevant: true,
+        feedback: 'Resposta registrada.',
+        status: 'correct'
+    };
+}
+
 function loadQuestion() {
     answered = false;
     pending = null;
@@ -142,6 +238,7 @@ function loadQuestion() {
         textarea.className = 'essay-input';
         textarea.rows = 6;
         textarea.placeholder = data.placeholder || 'Escreva sua anotação aqui...';
+
         textarea.addEventListener('input', () => {
             pending = { type: 'essay', value: textarea.value.trim() };
             if (submitBtn) {
@@ -403,6 +500,7 @@ function finalizePending() {
             : data.answers[data.correct];
 
         reviewResults[currentQuestion] = {
+            type: data.type,
             question: data.question,
             userAnswer,
             correctAnswer,
@@ -424,12 +522,22 @@ function finalizePending() {
             if (currentQuestion < quizData.length) loadQuestion(); else showResult();
         }, 100);
     } else if (pending.type === 'essay') {
+        const validation = validateEssayAnswer(pending.value, data, currentQuestion);
+
         answered = true;
+        const shouldAwardPoint = essayQuestionIndexes.has(currentQuestion) && validation.status === 'correct';
+        if (shouldAwardPoint) {
+            score += 1;
+        }
+
         reviewResults[currentQuestion] = {
+            type: data.type,
             question: data.question,
             userAnswer: pending.value,
             correctAnswer: 'Resposta discursiva registrada',
-            isCorrect: true
+            isCorrect: shouldAwardPoint,
+            status: validation.status || 'correct',
+            feedback: validation.feedback || 'Resposta registrada.'
         };
         if (submitBtn) {
             submitBtn.disabled = true;
@@ -464,6 +572,7 @@ function finalizePending() {
             .join(' | ');
 
         reviewResults[currentQuestion] = {
+            type: data.type,
             question: data.question,
             userAnswer: userAnswerText,
             correctAnswer: correctAnswerText,

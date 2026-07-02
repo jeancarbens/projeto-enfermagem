@@ -66,11 +66,19 @@ function renderResult() {
     results.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = `review-item ${item.isCorrect ? 'correct' : 'wrong'}`;
+        const isEssay = item.type === 'essay';
+        const statusLabel = item.status === 'correct'
+            ? '✅ Resposta considerada correta'
+            : item.status === 'partial'
+                ? '🟡 Resposta parcialmente correta'
+                : '❌ Resposta considerada incorreta';
+
         div.innerHTML = `
             <p><strong>${index + 1}. ${item.question}</strong></p>
             <p><strong>Resposta marcada:</strong> ${item.userAnswer || '—'}</p>
             <p><strong>Resposta correta:</strong> ${item.correctAnswer || '—'}</p>
-            <p class="result-tag">${item.isCorrect ? '✅ Acertou' : '❌ Errou'}</p>
+            ${isEssay ? `<p><strong>Verificação:</strong> ${item.feedback || 'Resposta analisada.'}</p>` : ''}
+            <p class="result-tag">${isEssay ? statusLabel : (item.isCorrect ? '✅ Acertou' : '❌ Errou')}</p>
         `;
         reviewSection.appendChild(div);
     });
