@@ -202,6 +202,10 @@ function validateEssayAnswer(value, questionData, questionIndex, { minLength = 1
 }
 
 function loadQuestion() {
+    if (!questionNumberEl || !questionTextEl || !answersEl || !progressFillEl) {
+        return;
+    }
+
     answered = false;
     pending = null;
     const data = quizData[currentQuestion];
@@ -616,5 +620,7 @@ function showResult() {
     window.location.href = `resultado.html?${params.toString()}`;
 }
 
-showWelcome();
-loadQuestion();
+if (questionNumberEl && questionTextEl && answersEl && progressFillEl) {
+    showWelcome();
+    loadQuestion();
+}

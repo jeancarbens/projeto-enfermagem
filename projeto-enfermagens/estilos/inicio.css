@@ -18,6 +18,24 @@ body {
     animation: pageFadeIn 1s ease forwards;
 }
 
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+
+img#logo-inicio {
+    width: min(160px, 42vw);
+    max-width: 180px;
+    height: auto;
+    opacity: 0;
+    transform: translateY(-18px);
+    animation: fadeInUp 0.9s ease forwards;
+    animation-delay: 0.2s;
+}
+
 h1#titulo {
     text-align: center;
     color: black;
@@ -30,9 +48,9 @@ h1#titulo {
 div#corpo {
     background-color: white;
     margin: auto;
-    max-width: 500px;
-    max-height: 500px;
-    padding: 20px;
+    width: min(92vw, 500px);
+    min-height: auto;
+    padding: 20px 18px;
     border-radius: 30px;
     margin-top: 20px;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
@@ -40,28 +58,37 @@ div#corpo {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: 18px;
     opacity: 0;
     transform: translateY(24px);
     animation: fadeInUp 1s ease forwards;
     animation-delay: 0.35s;
+    box-sizing: border-box;
 }
 
 p#dnome {
-    padding-top: 100px;
-    font-size: 2em;
+    padding-top: 0;
+    font-size: clamp(1.1em, 2vw, 1.6em);
+    width: 100%;
+    text-align: center;
 }
 
 input#inome {
-    height: 35px;
+    height: 40px;
     width: 100%;
+    max-width: 100%;
     border-radius: 10px;
     border: 1px solid #000000;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-top: 8px;
 }
 
 p#inicial {
-    padding-top: 50px;
+    padding-top: 0;
     text-align: center;
     font-size: 1.5em;
+    margin: 0;
 }
 
 button#iinicial {
@@ -75,6 +102,7 @@ button#iinicial {
     background-position: center center;
     cursor: pointer;
     padding: 35px;
+    margin-top: 10px;
     background-color: aqua;
     transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
     transform: scale(0.95);
@@ -85,6 +113,97 @@ button#iinicial:hover {
     transform: translateY(-2px) scale(1.08);
     box-shadow: 0 12px 22px rgba(0, 0, 0, 0.15);
     background-color: #66f0ff;
+}
+
+@media (min-width: 1400px) {
+    body {
+        padding-top: 40px;
+    }
+
+    div#corpo {
+        width: min(70vw, 900px);
+        padding: 40px 36px;
+        gap: 28px;
+        border-radius: 40px;
+    }
+
+    header {
+        gap: 20px;
+    }
+
+    img#logo-inicio {
+        width: min(260px, 20vw);
+        max-width: 320px;
+    }
+
+    h1#titulo {
+        font-size: clamp(2rem, 2.8vw, 3rem);
+    }
+
+    p#dnome {
+        font-size: clamp(1.5rem, 1.8vw, 2.2rem);
+    }
+
+    input#inome {
+        height: 56px;
+        font-size: 1.2rem;
+    }
+
+    button#iinicial {
+        width: 90px;
+        height: 90px;
+        background-size: 45px;
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 0;
+        height: auto;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    div#corpo {
+        width: min(94vw, 460px);
+        padding: 16px 14px;
+        gap: 12px;
+        margin: 10px 0;
+        border-radius: 22px;
+    }
+
+    header {
+        gap: 10px;
+    }
+
+    img#logo-inicio {
+        width: min(110px, 32vw);
+    }
+
+    h1#titulo {
+        font-size: clamp(1.1rem, 4.3vw, 1.4rem);
+        line-height: 1.2;
+    }
+
+    p#dnome {
+        font-size: clamp(0.95rem, 3.2vw, 1.2rem);
+    }
+
+    input#inome {
+        height: 38px;
+        font-size: 0.95rem;
+    }
+
+    button#iinicial {
+        width: 40px;
+        height: 40px;
+        background-size: 30px;
+        padding: 28px;
+        margin-top: 10px;
+    }
 }
 
 @keyframes pageFadeIn {
