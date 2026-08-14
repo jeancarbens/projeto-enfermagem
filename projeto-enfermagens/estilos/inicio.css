@@ -108,16 +108,17 @@ p#inicial {
 button#iinicial {
     border: none;
     border-radius: 999px;
-    min-width: 180px;
+    min-width: 240px;
     height: 56px;
     cursor: pointer;
-    padding: 0 22px;
+    padding: 0 28px;
     margin-top: 10px;
     background: linear-gradient(135deg, #2ec4b6, #1f8fc5);
     color: white;
     font-size: 1rem;
     font-weight: 800;
     letter-spacing: 0.02em;
+    white-space: nowrap;
     transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
     transform: scale(0.95);
     animation: popIn 0.8s ease 0.5s both;
@@ -213,10 +214,10 @@ button#iinicial:hover {
     }
 
     button#iinicial {
-        width: 40px;
-        height: 40px;
-        background-size: 30px;
-        padding: 28px;
+        min-width: 200px;
+        height: 48px;
+        padding: 0 20px;
+        font-size: 0.95rem;
         margin-top: 10px;
     }
 }
