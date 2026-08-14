@@ -7,22 +7,24 @@
     <link rel="stylesheet" href="resultado.css">
 </head>
 <body>
+    <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
+
     <main class="container">
-        <h1>Resultado do Quiz</h1>
+        <h1>🏆 Resultado do Quiz</h1>
         <section class="score-box">
             <div id="celebration" class="celebration" aria-hidden="true"></div>
             <div class="result-summary">
-                <p id="player-name" class="player-name">Nome:</p>
+                <p id="player-name" class="player-name">👤 Nome:</p>
                 <p id="score-text" class="score-text"></p>
                 <p id="percentage-text" class="percentage-text"></p>
                 <p id="performance-message" class="performance-message"></p>
             </div>
-            <button class="btn" id="toggle-review">Ver questões</button>
+            <button class="btn" id="toggle-review">📋 Ver questões</button>
         </section>
 
         <section class="actions">
-            <button class="btn btn-secondary" id="retry-btn">Refazer teste</button>
-            <a class="btn btn-link" href="index.html">Voltar ao início</a>
+            <button class="btn btn-secondary" id="retry-btn">🔄 Refazer quiz</button>
+            <a class="btn btn-link" href="index.html">🏠 Voltar ao início</a>
         </section>
 
         <section class="review" id="review-section"></section>

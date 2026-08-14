@@ -76,8 +76,8 @@ function showWelcome() {
 
     const nome = getQueryParam('nome');
     welcomeMessageEl.textContent = nome
-        ? `Bem-vindo(a), ${nome}!`
-        : 'Bem-vindo(a) ao quiz de enfermagem!';
+        ? `👋 Olá, ${nome}!`
+        : '👋 Olá, estudante!';
 }
 
 function validateEssayAnswer(value, questionData, questionIndex, { minLength = 10, minWords = 4, requiredRatio = 0.5 } = {}) {
@@ -183,13 +183,13 @@ function loadQuestion() {
     answered = false;
     pending = null;
     const data = quizData[currentQuestion];
-    questionNumberEl.textContent = `Pergunta ${currentQuestion + 1} de ${quizData.length}`;
+    questionNumberEl.textContent = `📋 Questão ${currentQuestion + 1} de ${quizData.length}`;
     questionTextEl.textContent = data.question;
     progressFillEl.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
     answersEl.innerHTML = '';
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Enviar resposta';
+        submitBtn.textContent = '📤 Enviar resposta';
         submitBtn.classList.remove('ready');
     }
 
@@ -221,7 +221,7 @@ function loadQuestion() {
             pending = { type: 'essay', value: textarea.value.trim() };
             if (submitBtn) {
                 submitBtn.disabled = textarea.value.trim().length === 0;
-                submitBtn.textContent = textarea.value.trim().length === 0 ? 'Enviar resposta' : 'Enviar resposta — pronto';
+                submitBtn.textContent = textarea.value.trim().length === 0 ? '📤 Enviar resposta' : '📤 Enviar resposta — pronto';
                 submitBtn.classList.toggle('ready', textarea.value.trim().length > 0);
             }
         });

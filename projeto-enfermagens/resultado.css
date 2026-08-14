@@ -5,31 +5,59 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #83aeff;
+    background: linear-gradient(135deg, #e1f7ff 0%, #d9efff 35%, #eef9ff 100%);
     color: #1f2937;
+    position: relative;
+    min-height: 100vh;
+}
+
+.confetti-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.confetti-layer.active {
+    opacity: 1;
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -12px;
+    width: 10px;
+    height: 18px;
+    border-radius: 999px;
+    opacity: 0.9;
+    animation: confettiFall 2.4s ease-in forwards;
 }
 
 .container {
     max-width: 900px;
     width: min(96%, 900px);
     margin: 24px auto;
-    background: #b6deff;
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
     padding: 28px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 45px rgba(17, 98, 125, 0.14);
     animation: fadeInSlide 0.8s ease forwards;
+    border: 1px solid rgba(17, 98, 125, 0.08);
 }
 
 h1 {
     margin-top: 0;
+    color: #103b63;
+    font-size: clamp(2rem, 4vw, 2.8rem);
 }
 
 .score-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #ffffff;
-    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,248,255,0.96));
+    border: 1px solid rgba(17, 98, 125, 0.08);
+    border-radius: 18px;
     padding: 18px;
     margin-bottom: 20px;
     gap: 16px;
@@ -50,6 +78,7 @@ h1 {
     padding: 8px 10px;
     border-radius: 16px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(127, 190, 255, 0.08);
 }
 
 .celebration .emoji {
@@ -124,6 +153,20 @@ h1 {
 @keyframes fadeInItem {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(var(--x-shift, 0px), 110vh, 0) rotate(540deg) scale(0.8);
+        opacity: 0;
+    }
 }
 .actions {
     display: flex;

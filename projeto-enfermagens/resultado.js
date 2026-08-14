@@ -28,15 +28,15 @@ function getResultData() {
 
 function getPerformanceMessage(percentual) {
     if (percentual >= 80) {
-        return 'Excelente! Você demonstrou ótimo domínio do conteúdo.';
+        return '🎉 Excelente! Você demonstrou ótimo domínio do conteúdo.';
     }
     if (percentual >= 60) {
-        return 'Muito bom! Você demonstrou um bom domínio do conteúdo.';
+        return '⭐ Muito bom! Você demonstrou um bom domínio do conteúdo.';
     }
     if (percentual >= 40) {
-        return 'Bom trabalho! Continue estudando para melhorar ainda mais.';
+        return '👍 Bom trabalho! Continue estudando para melhorar ainda mais.';
     }
-    return 'Continue praticando! Você está no caminho certo.';
+    return '💪 Continue praticando! Você está no caminho certo.';
 }
 
 function renderResult() {
@@ -47,12 +47,31 @@ function renderResult() {
     const percentual = total > 0 ? Math.round((acertos / total) * 100) : 0;
     const mensagem = getPerformanceMessage(percentual);
 
-    playerNameEl.textContent = data.nome || 'Aluno(a)';
-    scoreTextEl.textContent = `${acertos} / ${total} acertos`;
-    if (percentageTextEl) percentageTextEl.textContent = `${percentual}% de aproveitamento`;
+    playerNameEl.textContent = `👤 ${data.nome || 'Aluno(a)'}`;
+    scoreTextEl.textContent = `🎯 ${acertos} / ${total} acertos`;
+    if (percentageTextEl) percentageTextEl.textContent = `📊 ${percentual}% de aproveitamento`;
     if (performanceMessageEl) performanceMessageEl.textContent = mensagem;
 
     const celebrationEl = document.getElementById('celebration');
+    const confettiLayer = document.getElementById('confetti-layer');
+    if (confettiLayer) {
+        confettiLayer.innerHTML = '';
+        if (percentual >= 80) {
+            confettiLayer.classList.add('active');
+            for (let i = 0; i < 22; i += 1) {
+                const piece = document.createElement('span');
+                piece.className = 'confetti-piece';
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.setProperty('--x-shift', `${(Math.random() * 220 - 110).toFixed(0)}px`);
+                piece.style.animationDelay = `${(Math.random() * 0.8).toFixed(2)}s`;
+                piece.style.background = ['#ffcc00', '#ff6b6b', '#32d399', '#60a5fa', '#c084fc', '#f9a8d4'][i % 6];
+                confettiLayer.appendChild(piece);
+            }
+        } else {
+            confettiLayer.classList.remove('active');
+        }
+    }
+
     if (celebrationEl) {
         celebrationEl.className = 'celebration';
 
@@ -105,7 +124,7 @@ function renderResult() {
 toggleReviewBtn.addEventListener('click', () => {
     const visible = reviewSection.style.display === 'block';
     reviewSection.style.display = visible ? 'none' : 'block';
-    toggleReviewBtn.textContent = visible ? 'Ver questões' : 'Ocultar questões';
+    toggleReviewBtn.textContent = visible ? '📋 Ver questões' : '🙈 Ocultar questões';
 });
 
 retryBtn.addEventListener('click', () => {
