@@ -47,54 +47,67 @@ h1 {
     text-align: center;
     font-size: 1.6rem;
     line-height: 1;
-    padding: 6px;
+    padding: 8px 10px;
+    border-radius: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .celebration .emoji {
     display: block;
     font-size: 2.2rem;
-    margin-bottom: 6px;
+    margin-bottom: 0;
     transform-origin: center;
 }
 
-.celebration .msg {
-    font-size: 0.85rem;
-    margin: 0;
-    color: #065f46;
-    font-weight: 800;
+.celebration.perfect {
+    background: rgba(255, 215, 0, 0.12);
+    box-shadow: 0 8px 18px rgba(245, 158, 11, 0.18);
 }
 
 .celebration.perfect .emoji {
     animation: pop 900ms ease both;
 }
 
+.celebration.great {
+    background: rgba(16, 185, 129, 0.08);
+    box-shadow: 0 8px 16px rgba(16, 185, 129, 0.12);
+}
+
 .celebration.great .emoji {
     animation: bounce 900ms ease both;
+}
+
+.celebration.good {
+    background: rgba(59, 130, 246, 0.06);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.08);
 }
 
 .celebration.good .emoji {
     animation: float 1200ms ease-in-out infinite;
 }
 
-.celebration.ok .emoji {
-    animation: pulse 900ms ease both;
+.celebration.low {
+    background: rgba(107, 114, 128, 0.06);
+    box-shadow: 0 8px 14px rgba(107, 114, 128, 0.08);
 }
 
 .celebration.low .emoji {
+    animation: gentleWobble 1100ms ease-in-out infinite alternate;
     opacity: 0.9;
 }
 
 @keyframes pop {
-    0% { transform: scale(0.4) rotate(-10deg); opacity: 0; }
-    60% { transform: scale(1.15) rotate(6deg); opacity: 1; }
+    0% { transform: scale(0.45) rotate(-8deg); opacity: 0; }
+    45% { transform: scale(1.2) rotate(7deg); opacity: 1; }
+    75% { transform: scale(0.96) rotate(-2deg); }
     100% { transform: scale(1) rotate(0deg); }
 }
 
 @keyframes bounce {
-    0% { transform: translateY(0); }
-    30% { transform: translateY(-10px); }
-    60% { transform: translateY(4px); }
-    100% { transform: translateY(0); }
+    0% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-10px) scale(1.04); }
+    60% { transform: translateY(2px) scale(0.98); }
+    100% { transform: translateY(0) scale(1); }
 }
 
 @keyframes float {
@@ -103,10 +116,10 @@ h1 {
     100% { transform: translateY(0); }
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.06); }
-    100% { transform: scale(1); }
+@keyframes gentleWobble {
+    0% { transform: rotate(-3deg) scale(0.98); }
+    50% { transform: rotate(3deg) scale(1.02); }
+    100% { transform: rotate(-1deg) scale(1); }
 }
 @keyframes fadeInItem {
     from { opacity: 0; transform: translateY(10px); }

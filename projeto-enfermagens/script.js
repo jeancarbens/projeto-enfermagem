@@ -1,55 +1,29 @@
 const quizData = [
- 
-    { type: 'mcq', question: 'Qual é o nome da técnica que previne infecções durante procedimentos invasivos?', answers: ['Escovação', 'Assepsia', 'Aromaterapia', 'Hidratação'], correct: 1 },
-    { type: 'mcq', question: 'O que significa a sigla "PA" no registro de sinais vitais?', answers: ['Peso Arterial', 'Pulso Assistido', 'Pressão Arterial', 'Padrão Alimentar'], correct: 2 },
-    { type: 'mcq', question: 'Qual é a posição recomendada para paciente em risco de aspiração?', answers: ['Decúbito ventral', 'Sentado com tronco elevado', 'Decúbito lateral direito', 'Decúbito lateral esquerdo'], correct: 1 },
-    { type: 'mcq', question: 'Em qual situação a equipe de enfermagem deve realizar curativo estéril?', answers: ['Troca de roupa de cama', 'Limpeza oral', 'Tratamento de ferida cirúrgica', 'Aferição de temperatura'], correct: 2 },
-    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente no serviço de enfermagem.', placeholder: 'Descreva os principais dados e cuidados iniciais.', palavras_chave: ['admissao', 'paciente', 'dados', 'cuidados', 'avaliacao'] },
-
-    
-    { type: 'tf', question: 'A lavagem das mãos é uma medida eficaz para prevenir infecções nosocomiais.', correct: 0 },
-    { type: 'tf', question: 'Antibióticos são sempre indicados para infecções virais.', correct: 1 },
-    { type: 'tf', question: 'Aferir sinais vitais é tarefa exclusiva do médico.', correct: 1 },
-    { type: 'tf', question: 'Curativos estéreis devem ser utilizados em feridas cirúrgicas limpas quando recomendado.', correct: 0 },
-    { type: 'essay', question: 'Faça uma anotação sobre a admissão do paciente, destacando sinais vitais e queixas principais.', placeholder: 'Registre as informações observadas e a condição inicial do paciente.', palavras_chave: ['admissao', 'paciente', 'sinais', 'vitais', 'queixas', 'condicao'] },
-
-    
-    {
-        type: 'match',
-        question: 'Associe a medida de enfermagem à sua finalidade:',
-        left: ['Higienização das mãos', 'Troca de curativo estéril', 'Aferição da PA', 'Elevar cabeceira', 'Registro de enfermagem'],
-        right: ['Prevenção de infecção', 'Monitorar pressão arterial', 'Documentar cuidados prestados', 'Reduzir risco de aspiração', 'Manter campo estéril'],
-        
-        mapping: [0, 4, 1, 3, 2]
-    },
-    {
-        type: 'match',
-        question: 'Associe o sinal clínico à sua descrição:',
-        left: ['Taquicardia', 'Bradipneia', 'Hipertensão', 'Cianose', 'Febre'],
-        right: ['Temperatura corporal elevada', 'Frequência cardíaca aumentada', 'Sinais de baixa oxigenação', 'Pressão arterial elevada', 'Respiração mais lenta que o normal'],
-        mapping: [1, 4, 3, 2, 0]
-    },
-    {
-        type: 'match',
-        question: 'Associe o equipamento ao uso:',
-        left: ['Sonda nasogástrica', 'Cateter vesical', 'Oxímetro de pulso', 'Bisturi', 'Nebulizador'],
-        right: ['Medição de SpO2', 'Administração de ar/oxigênio inalatório', 'Instrumento para cortes cirúrgicos', 'Drenagem urinária', 'Acesso gástrico para nutrição/eliminação'],
-        mapping: [4, 3, 0, 2, 1]
-    },
-    {
-        type: 'match',
-        question: 'Associe a via de administração ao exemplo:',
-        left: ['Oral', 'Intravenosa', 'Intramuscular', 'Tópica', 'Subcutânea'],
-        right: ['Vacina comum', 'Colírio', 'Compressa de pomada', 'Soro fisiológico via cateter', 'Insulina'],
-        mapping: [0, 3, 1, 2, 4]
-    },
-    {
-        type: 'match',
-        question: 'Associe o termo ao conceito:',
-        left: ['Assepsia', 'Antissepsia', 'Biosegurança', 'Higiene', 'Epidemiologia'],
-        right: ['Estudo da distribuição de doenças', 'Conjunto de medidas para reduzir risco biológico', 'Método de eliminação de microrganismos', 'Medidas de limpeza pessoal', 'Aplicação de agentes para inibir microrganismos'],
-        mapping: [2, 4, 1, 3, 0]
-    }
+    { type: 'mcq', question: 'Qual das alternativas apresenta uma regra fundamental para a redação da anotação de enfermagem de acordo com os princípios éticos e legais?', answers: ['Utilizar corretor ortográfico líquido (branquinho) para apagar erros de grafia.', 'Registrar os cuidados antes mesmo de realizá-los para otimizar o tempo do plantão.', 'Escrever de forma clara, cronológica, sem linhas em branco e sem rasuras.', 'Anotar a lápis para que o enfermeiro possa corrigir possíveis erros de termos técnicos.'], correct: 2, feedback: 'Escrever de forma clara, cronológica, sem linhas em branco e sem rasuras.' },
+    { type: 'mcq', question: 'Qual é o principal objetivo da anotação de enfermagem?', answers: ['Substituir a prescrição médica.', 'Registrar os cuidados prestados e as informações relacionadas ao paciente.', 'Apenas controlar os horários das medicações.', 'Registrar somente informações administrativas.'], correct: 1, feedback: 'Registrar os cuidados prestados e as informações relacionadas ao paciente.' },
+    { type: 'mcq', question: 'Qual informação deve constar em uma anotação de enfermagem?', answers: ['Opiniões pessoais sobre o paciente.', 'Informações sem confirmação.', 'Dados objetivos, cuidados realizados e resposta do paciente.', 'Apenas o nome do profissional.'], correct: 2, feedback: 'Dados objetivos, cuidados realizados e resposta do paciente.' },
+    { type: 'mcq', question: 'Ao registrar uma anotação de enfermagem, o profissional deve utilizar:', answers: ['Linguagem informal e abreviações pessoais.', 'Linguagem clara, objetiva e técnica.', 'Gírias para facilitar a leitura.', 'Apenas letras maiúsculas.'], correct: 1, feedback: 'Linguagem clara, objetiva e técnica.' },
+    { type: 'mcq', question: 'Em caso de erro na anotação, o correto é:', answers: ['Rasurar completamente o registro.', 'Apagar com corretivo.', 'Fazer um traço simples sobre o erro, mantendo-o legível, realizar a correção conforme as normas institucionais e identificar-se.', 'Arrancar a folha do prontuário.'], correct: 2, feedback: 'Corrigir o erro de forma adequada, mantendo o registro legível e identificando a correção.' },
+    { type: 'mcq', question: 'Qual das opções representa uma anotação adequada?', answers: ['"Paciente está bem."', '"Paciente parece triste."', '"Paciente consciente, orientado, afebril, PA 120 × 80 mmHg, sem queixas de dor."', '"Tudo normal."'], correct: 2, feedback: 'É um registro objetivo, com informações observáveis e mensuráveis.' },
+    { type: 'mcq', question: 'Após administrar um medicamento, o profissional deve registrar:', answers: ['Somente o nome do medicamento.', 'Horário, medicamento administrado e resposta do paciente, quando aplicável.', 'Apenas a assinatura.', 'Somente se houver reação adversa.'], correct: 1, feedback: 'Deve registrar o horário, o medicamento administrado e a resposta do paciente quando aplicável.' },
+    { type: 'mcq', question: 'O que NÃO deve ser incluído em uma anotação de enfermagem?', answers: ['Sinais vitais.', 'Procedimentos realizados.', 'Julgamentos e opiniões pessoais.', 'Intercorrências.'], correct: 2, feedback: 'Julgamentos e opiniões pessoais não devem fazer parte de um registro profissional objetivo.' },
+    { type: 'mcq', question: 'A anotação de enfermagem deve ser realizada:', answers: ['Apenas ao final do plantão.', 'Somente quando houver alterações no estado do paciente.', 'Logo após o cuidado prestado ou o mais próximo possível do momento da assistência.', 'Apenas quando o enfermeiro solicitar.'], correct: 2, feedback: 'O registro deve ser realizado logo após o cuidado ou o mais próximo possível do momento da assistência.' },
+    { type: 'mcq', question: 'Qual é a importância legal da anotação de enfermagem?', answers: ['Não possui valor legal.', 'Serve apenas para controle interno.', 'É um documento legal que comprova a assistência prestada.', 'É utilizada somente para pesquisas.'], correct: 2, feedback: 'A anotação é um documento legal que registra e comprova a assistência prestada.' },
+    { type: 'mcq', question: 'Qual item é indispensável ao finalizar uma anotação de enfermagem?', answers: ['Apenas a data.', 'Nome do paciente.', 'Identificação do profissional, conforme as normas institucionais e profissionais.', 'Nome do médico responsável.'], correct: 2, feedback: 'A identificação do profissional é necessária conforme as normas institucionais e profissionais.' },
+    { type: 'mcq', question: 'Em qual documento deve ser realizada a anotação de enfermagem?', answers: ['Agenda pessoal do profissional.', 'Prontuário do paciente.', 'Caderno de ocorrências da recepção.', 'Livro de visitas.'], correct: 1, feedback: 'A anotação de enfermagem deve ser registrada no prontuário do paciente.' },
+    { type: 'mcq', question: 'Após a verificação dos sinais vitais, o que deve ser registrado?', answers: ['Apenas se estiverem alterados.', 'Os valores encontrados e o horário da aferição.', 'Somente a temperatura corporal.', 'Apenas a pressão arterial.'], correct: 1, feedback: 'Devem ser registrados os valores encontrados e o horário da aferição.' },
+    { type: 'mcq', question: 'Em relação ao horário da anotação, é correto afirmar:', answers: ['Pode ser preenchido antes do procedimento.', 'Deve corresponder ao momento do cuidado prestado ou ao horário em que o fato ocorreu.', 'Pode ser alterado posteriormente.', 'Não precisa ser registrado.'], correct: 1, feedback: 'O horário deve corresponder ao momento do cuidado ou ao horário do fato registrado.' },
+    { type: 'mcq', question: 'Qual das informações abaixo é subjetiva?', answers: ['Temperatura de 38,2 °C.', 'Saturação de O₂ de 96%.', 'Paciente relata dor intensa no abdome.', 'Frequência cardíaca de 82 bpm.'], correct: 2, feedback: 'É uma informação subjetiva porque foi relatada pelo próprio paciente.' },
+    { type: 'mcq', question: 'Ao registrar uma intercorrência, o profissional deve:', answers: ['Omitir informações para evitar problemas.', 'Relatar os fatos de forma clara e cronológica.', 'Esperar o final do plantão.', 'Escrever apenas "houve intercorrência".'], correct: 1, feedback: 'A intercorrência deve ser registrada de forma clara, objetiva e cronológica.' },
+    { type: 'mcq', question: 'Qual informação é essencial em uma anotação após um curativo?', answers: ['Apenas o tipo de cobertura utilizada.', 'Aspecto da lesão, procedimento realizado e resposta do paciente.', 'Apenas o nome do profissional.', 'Não é necessário registrar.'], correct: 1, feedback: 'O registro deve conter informações relevantes sobre a lesão, o procedimento realizado e a resposta do paciente.' },
+    { type: 'mcq', question: 'O uso de corretivo líquido no prontuário é:', answers: ['Obrigatório.', 'Permitido em qualquer situação.', 'Proibido.', 'Permitido apenas pelo enfermeiro.'], correct: 2, feedback: 'O uso de corretivo líquido no prontuário é proibido.' },
+    { type: 'mcq', question: 'Uma anotação ilegível pode:', answers: ['Não causar nenhum problema.', 'Comprometer a comunicação e a segurança do paciente.', 'Melhorar a privacidade do paciente.', 'Ser ignorada pela equipe.'], correct: 1, feedback: 'Uma anotação ilegível pode comprometer a comunicação entre os profissionais e a segurança do paciente.' },
+    { type: 'mcq', question: 'Qual das opções representa um registro objetivo?', answers: ['"Paciente muito nervoso."', '"Paciente agitado, chorando e relatando ansiedade."', '"Paciente está estranho."', '"Paciente parece cansado."'], correct: 1, feedback: 'Apresenta comportamentos observáveis e o relato do paciente.' },
+    { type: 'mcq', question: 'Quem é responsável pela anotação de enfermagem?', answers: ['Apenas o enfermeiro.', 'O profissional que realizou o cuidado ou observação, conforme sua categoria profissional.', 'Apenas o médico.', 'O acompanhante.'], correct: 1, feedback: 'O registro deve ser realizado pelo profissional que realizou o cuidado ou observação, conforme sua categoria profissional.' },
+    { type: 'mcq', question: 'Ao observar uma reação adversa a um medicamento, o profissional deve:', answers: ['Não registrar.', 'Registrar a reação e as condutas adotadas imediatamente.', 'Esperar o médico registrar.', 'Registrar apenas no final do plantão.'], correct: 1, feedback: 'A reação e as condutas adotadas devem ser registradas imediatamente.' },
+    { type: 'mcq', question: 'O técnico de enfermagem administra uma medicação prescrita "se necessário" (S/N) para dor. Além do horário e do nome do medicamento, o que é indispensável constar na anotação?', answers: ['Apenas a assinatura do paciente.', 'A queixa inicial do paciente e a reavaliação da dor após a administração.', 'O preço do medicamento.', 'A justificativa do médico para escolher a medicação.'], correct: 1, feedback: 'É necessário registrar a queixa inicial e a reavaliação da dor após a administração.' },
+    { type: 'mcq', question: 'Durante o plantão, o técnico de enfermagem observa que o paciente apresenta respiração muito rápida e superficial. Qual é o termo técnico correto?', answers: ['Bradipneia.', 'Taquipneia.', 'Dispneia.', 'Apneia.'], correct: 1, feedback: 'Taquipneia é o termo utilizado para frequência respiratória aumentada.' },
+    { type: 'mcq', question: 'O técnico de enfermagem foi registrar o volume de urina de um paciente em controle rigoroso de balanço hídrico. O paciente urinou apenas 80 mL em um período de 12 horas. Qual termo técnico define essa baixa produção de urina?', answers: ['Poliúria.', 'Disúria.', 'Oligúria.', 'Anúria.'], correct: 2, feedback: 'Oligúria corresponde à redução da produção de urina.' }
 ];
 
 const questionNumberEl = document.getElementById('question-number');

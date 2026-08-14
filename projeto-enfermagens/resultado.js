@@ -1,5 +1,7 @@
 const playerNameEl = document.getElementById('player-name');
 const scoreTextEl = document.getElementById('score-text');
+const percentageTextEl = document.getElementById('percentage-text');
+const performanceMessageEl = document.getElementById('performance-message');
 const toggleReviewBtn = document.getElementById('toggle-review');
 const retryBtn = document.getElementById('retry-btn');
 const reviewSection = document.getElementById('review-section');
@@ -24,37 +26,53 @@ function getResultData() {
     };
 }
 
+function getPerformanceMessage(percentual) {
+    if (percentual >= 80) {
+        return 'Excelente! Você demonstrou ótimo domínio do conteúdo.';
+    }
+    if (percentual >= 60) {
+        return 'Muito bom! Você demonstrou um bom domínio do conteúdo.';
+    }
+    if (percentual >= 40) {
+        return 'Bom trabalho! Continue estudando para melhorar ainda mais.';
+    }
+    return 'Continue praticando! Você está no caminho certo.';
+}
+
 function renderResult() {
     const data = getResultData();
-    const total = Number(data.total || 0);
-    const score = Number(data.score || 0);
+    const results = Array.isArray(data.results) ? data.results : [];
+    const total = Number(data.total || 0) || results.length || 0;
+    const acertos = results.filter((item) => item.isCorrect === true).length;
+    const percentual = total > 0 ? Math.round((acertos / total) * 100) : 0;
+    const mensagem = getPerformanceMessage(percentual);
 
-    playerNameEl.textContent = `Nome: ${data.nome || 'Aluno(a)'}`;
-    scoreTextEl.textContent = `Pontuação: ${score} de ${total}`;
+    playerNameEl.textContent = data.nome || 'Aluno(a)';
+    scoreTextEl.textContent = `${acertos} / ${total} acertos`;
+    if (percentageTextEl) percentageTextEl.textContent = `${percentual}% de aproveitamento`;
+    if (performanceMessageEl) performanceMessageEl.textContent = mensagem;
 
     const celebrationEl = document.getElementById('celebration');
     if (celebrationEl) {
         celebrationEl.className = 'celebration';
-        // decidir faixa
-        if (score === total && total > 0) {
+
+        let emoji = '🙂';
+        if (percentual >= 80) {
             celebrationEl.classList.add('perfect');
-            celebrationEl.innerHTML = `<span class="emoji">🏆🎉</span><p class="msg">Perfeito — todas corretas!</p>`;
-        } else if (score >= 10 && score <= (total - 1)) {
+            emoji = '🏆';
+        } else if (percentual >= 60) {
             celebrationEl.classList.add('great');
-            celebrationEl.innerHTML = `<span class="emoji">👏✨</span><p class="msg">Ótimo — muito bem!</p>`;
-        } else if (score >= 7 && score < 10) {
+            emoji = '🎯';
+        } else if (percentual >= 40) {
             celebrationEl.classList.add('good');
-            celebrationEl.innerHTML = `<span class="emoji">🙂👍</span><p class="msg">Bom — continue praticando!</p>`;
-        } else if (score >= 5 && score <= 6) {
-            celebrationEl.classList.add('ok');
-            celebrationEl.innerHTML = `<span class="emoji">🤝</span><p class="msg">Razoável — quase lá!</p>`;
+            emoji = '👍';
         } else {
             celebrationEl.classList.add('low');
-            celebrationEl.innerHTML = `<span class="emoji">😕💡</span><p class="msg">Tente novamente — estude mais!</p>`;
+            emoji = '📚';
         }
-    }
 
-    const results = Array.isArray(data.results) ? data.results : [];
+        celebrationEl.innerHTML = `<span class="emoji">${emoji}</span>`;
+    }
 
     reviewSection.innerHTML = '';
 
